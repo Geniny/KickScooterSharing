@@ -1,0 +1,68 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="~/css/login.css" />
+
+
+
+<div class="row">
+    <div class="col-6 offset-3">
+        <section>
+            <form id="account" method="post">
+                <h1 class="text-center">@ViewData["Title"]</h1>
+                <h4 class="text-center">Use a local account to log in.</h4>
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group text-center">
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" class="form-control smoth-border" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-group text-center">
+                    <label asp-for="Input.Password"></label>
+                    <input asp-for="Input.Password" class="form-control smoth-border" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="row form-group mb-0">
+                    <div class="col-6 checkbox text-left">
+                        <label asp-for="Input.RememberMe">
+                            <input asp-for="Input.RememberMe" />
+                            @Html.DisplayNameFor(m => m.Input.RememberMe)
+                        </label>
+                    </div>
+                    <div class="col-6 form-group text-right">
+                        <p>
+                            <a class="nondecoration" id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-block smoth-border btn-primary">Log in</button>
+                </div>
+            </form>
+            <div class="login-or text-center m-auto">
+                <hr class="hr-or">
+                <span class="span-or">or</span>
+            </div>
+            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                @foreach (var provider in Model.ExternalLogins)
+                {
+                    <button type="submit" class="btn nondecoration google btn-link text-center" name="provider" value="@provider.Name">
+                        <i class="fa fa-google-plus"></i> Signup using Google
+                    </button>
+                }
+            </form>
+        </section>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

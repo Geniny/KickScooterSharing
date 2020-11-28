@@ -32,9 +32,10 @@ namespace KickScooterSharing.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> OrderMenu(int id)
         {
-            var product = await this._context.Products.FirstOrDefaultAsync(x => x.Id == id);
+            var product = await this._context.Products.Include(p => p.Tariff).Include(p => p.Scooter).ThenInclude(x => x.ScooterModel).FirstOrDefaultAsync(x => x.Id == id);
             return PartialView(product);
         }
 
@@ -48,7 +49,7 @@ namespace KickScooterSharing.Controllers
         [AllowAnonymous]
         public JsonResult GetParkingLocations()
         {
-            var locations = this._context.parkingLocations.ToList();
+            var locations = this._context.ParkingLocations.ToList();
             return Json(locations);
         }
 

@@ -13,7 +13,7 @@ namespace KickScooterSharing.Data
         public DbSet<Product> Products { get; set; }
 
         public DbSet<ProductLocation> ProductLocations { get; set; }
-        public DbSet<ParkingLocation> parkingLocations { get; set; }
+        public DbSet<ParkingLocation> ParkingLocations { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

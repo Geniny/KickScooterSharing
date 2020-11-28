@@ -1,7 +1,5 @@
 ﻿function initMap() {
 
-    var scooters = $.getJSON('Home/GetProductLocations');
-    var parkings = $.getJSON('Home/GetParkingLocations');
 
     map = new google.maps.Map(document.getElementById('map'), {
         mapId: 'c59998b5dbf7aeb4',
@@ -9,14 +7,14 @@
         zoom: 13
     });
 
-    setMarkers(map, scooters, '/icons/kick-scooter.png', false);
-    setMarkers(map, parkings, '/icons/parking.png', true);  
+    $.getJSON('Home/GetProductLocations', function (data) { setMarkers(map, data, '/icons/kick-scooter.png', false); });
+    $.getJSON('Home/GetParkingLocations', function (data) { setMarkers(map, data, '/icons/parking.png', true);  });  
 }
 
 function setMarkers(map, markers, icon, isParking) {
     for (let i = 0; i < markers.length; i++) {
         const marker = new google.maps.Marker({
-            position: new google.maps.LatLng(markers[i].Latitude, markers[i].Longitude),
+            position: new google.maps.LatLng(markers[i].latitude, markers[i].longitude),
             icon: icon,
             map: map
         });

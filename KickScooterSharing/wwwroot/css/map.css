@@ -2,3 +2,8 @@
     height: 85vh;
     width: 100%;
 }
+
+#order-menu {
+    display: none;
+}
+

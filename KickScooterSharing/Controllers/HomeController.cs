@@ -36,6 +36,7 @@ namespace KickScooterSharing.Controllers
         public async Task<IActionResult> OrderMenu(int id)
         {
             var product = await this._context.Products.Include(p => p.Tariff).Include(p => p.Scooter).ThenInclude(x => x.ScooterModel).FirstOrDefaultAsync(x => x.Id == id);
+
             return PartialView(product);
         }
 

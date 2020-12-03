@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KickScooterSharing.Data;
 using KickScooterSharing.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KickScooterSharing.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -50,9 +52,9 @@ namespace KickScooterSharing.Controllers
         // GET: Product/Create
         public IActionResult Create()
         {
-            ViewData["ScooterId"] = new SelectList(_context.Set<Scooter>(), "Id", "Id");
-            ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Id", "Id");
-            ViewData["TariffId"] = new SelectList(_context.Set<Tariff>(), "Id", "Id");
+            ViewData["ScooterId"] = new SelectList(_context.Set<Scooter>(), "Id", "Name");
+            ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Id", "Name");
+            ViewData["TariffId"] = new SelectList(_context.Set<Tariff>(), "Id", "Name");
             return View();
         }
 

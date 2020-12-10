@@ -8,7 +8,7 @@ namespace KickScooterSharing.Models
     public class Sales
     {
         public int? Id { get; set; }
-        public float Price { get; set; }
+        public double Price { get; set; }
         public DateTime DateTime { get; set; }
         public DateTime EndDate { get; set; }
         public string UserId { get; set; }

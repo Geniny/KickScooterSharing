@@ -36,7 +36,8 @@ namespace KickScooterSharing.Controllers
         public async Task<IActionResult> OrderMenu(int id)
         {
             var product = await this._context.Products.Include(p => p.Tariff).Include(p => p.Scooter).ThenInclude(x => x.ScooterModel).FirstOrDefaultAsync(x => x.Id == id);
-
+            Console.WriteLine(id);
+            Debug.WriteLine(id);
             return PartialView(product);
         }
 
@@ -55,13 +56,45 @@ namespace KickScooterSharing.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> OrderProduct(int id)
+        public async Task<IActionResult> OrderProduct(int id, int minutes)
         {
-            var product = await this._context.Products.FirstOrDefaultAsync(x => x.Id == id);
+            var product = await this._context.Products.Include(p => p.Tariff).FirstOrDefaultAsync(x => x.Id == id);
             var user = await this._userManager.GetUserAsync(this.User);
-            product.Name = user.RegisterDate.ToString();
 
-            return PartialView(product);
+            if (product.Status.Name  == "free")
+            {
+                if (user.Balance - (product.Tariff.StartPrice + product.Tariff.CostPerMinute * minutes) <= 0)
+                {
+                    ModelState.AddModelError(string.Empty, $"Not enough money");
+                    return PartialView(null);
+                }
+                else
+                {
+                    product.StatusId = 2;
+                    DateTime currentTime = DateTime.Now.AddSeconds(15);
+                    DateTime endTime = currentTime.AddMinutes(minutes);
+                    var sale = new Sales() { User = user, Product = product, DateTime = DateTime.Now, EndDate = endTime, Price = minutes * product.Tariff.CostPerMinute + product.Tariff.StartPrice };
+                    _context.Add(sale);
+                    await _context.SaveChangesAsync();                   
+                    return PartialView(sale);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, $"The {product.Name} is busy now");
+                return PartialView(null);
+            }
+            
+        }
+
+        public async Task<IActionResult> BookProduct(int id)
+        {
+            return PartialView();
+        }
+
+        public async Task<IActionResult> EndOrdering(int id)
+        {
+            return PartialView();
         }
 
 

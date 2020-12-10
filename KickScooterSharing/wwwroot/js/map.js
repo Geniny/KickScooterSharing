@@ -26,15 +26,17 @@ function setMarkers(map, markers, icon, isParking) {
             });
         }
         else {
-            marker.set('id', markers[i].Id);
+            console.log(markers[i].productId)
+            marker.set('id', markers[i].productId);
 
             marker.addListener("click", () => {
                 if (!($("#order-menu").hasClass('opened'))) {
                     $('#order-menu').addClass('opened');
                     $('#map').animate({ width: '65%' }, 500);
                     $('#order-menu').animate({ width: '35%' }, 500, () => {
-                        $('#order-menu').load('Home/OrderMenu', { 'id': marker.id })
+                        $('#order-menu').load('Home/OrderMenu', { 'id': marker.id }).css("display", "block");
                     });
+
                 }
                 map.setZoom(18);
                 map.setCenter(marker.getPosition());

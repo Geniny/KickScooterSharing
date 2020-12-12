@@ -8,7 +8,7 @@
     });
 
     $.getJSON('Home/GetProductLocations', function (data) { setMarkers(map, data, '/icons/kick-scooter.png', false); });
-    $.getJSON('Home/GetParkingLocations', function (data) { setMarkers(map, data, '/icons/parking.png', true);  });  
+    $.getJSON('Home/GetParkingLocations', function (data) { setMarkers(map, data, '/icons/parking.png', true); });
 }
 
 function setMarkers(map, markers, icon, isParking) {
@@ -26,15 +26,18 @@ function setMarkers(map, markers, icon, isParking) {
             });
         }
         else {
-            marker.set('id', markers[i].Id);
+            marker.set('id', markers[i].productId);
 
             marker.addListener("click", () => {
                 if (!($("#order-menu").hasClass('opened'))) {
                     $('#order-menu').addClass('opened');
                     $('#map').animate({ width: '65%' }, 500);
                     $('#order-menu').animate({ width: '35%' }, 500, () => {
-                        $('#order-menu').load('Home/OrderMenu', { 'id': marker.id })
+                        $('#order-menu').load('Home/OrderMenu', { 'id': marker.id }).css("display", "block");
                     });
+                }
+                else {
+                    $('#order-menu').load('Home/OrderMenu', { 'id': marker.id });
                 }
                 map.setZoom(18);
                 map.setCenter(marker.getPosition());

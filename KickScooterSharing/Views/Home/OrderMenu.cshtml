@@ -1,0 +1,45 @@
+﻿@model KickScooterSharing.Models.Product
+<div class="card mx-auto w-100">
+    <div class="card-header text-center">
+        <h5 class="mx-auto">Scooter info</h5>
+    </div>
+    <div class="card-body">
+        <h3>Model : @Model.Name</h3>
+        <h3>Status : @Model.Status</h3>
+        <h3>Tariff : @Model.Tariff.Name</h3>
+        <h3>Start price : @Model.Tariff.StartPrice</h3>
+        <h3>Cost per minute : @Model.Tariff.CostPerMinute</h3>
+        <form id="minut-count">
+            <div class="form-group">
+                <label for="minute-input" class="control-label">minutes</label>
+                <input type="number" id="minute-input" min="1" max="60" class="form-control" />
+                <span id="invalid-feedback" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer btn-group">
+        <div class="col">
+            <button class="btn-block btn-lg btn-success" onclick="validate()">order</button>
+        </div>
+        <div class="col">
+            <button class="btn-block btn-lg btn-info" onclick="book(@Model.ScooterId)">book</button>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+    function validate()
+    {
+        var minutes = $('#minute-input').val();
+        console.log(minutes);
+        if (minutes <= 0 && minutes >= 60) {
+
+        }
+        else
+        {
+            order(@Model.ScooterId, minutes);
+        }
+    }
+</script>
+

@@ -7,29 +7,37 @@
         </div>
         <div class="card-body">
             <h3>Tariff : </h3>
-            <h3>Balance : </h3>
+            <h3 id="balance">Balance : @Model.User.Balance</h3>
             <h3 id="time"> Time : 0:0:0 </h3>
         </div>
         <div class="card-footer btn-group">
-            <button id="finish-btn" asp-action="Finish" class="btn-block btn-lg btn-info">Finish</button>
+            <form method="get" asp-action="ReturnProduct" asp-controller="Home">
+                <button type="submit" id="finish-btn" name="id" value="@Model.ProductId" 
+                        class="btn-block btn-lg btn-info">Finish</button>
+            </form>
         </div>
     </div>
 
     <script>
         $(document).ready(function () {
-            var x = setInterval(() => {
+            var balance = @Model.User.Balance;
+
+            var timer = setInterval(() => {
                 var currentTime = new Date().getTime();
                 @{
                     DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                    TimeSpan diff = Model.DateTime.ToUniversalTime() - origin;
+                    TimeSpan diff = Model.StartDate.ToUniversalTime() - origin;
                 }
                 var distance = currentTime - @Math.Floor(diff.TotalMilliseconds);
                 var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                if (seconds == 0) {
+                    $("#balance").text("Balance : " balance - @Model.Product.Tariff.CostPerMinute);
+                }
                 $("#time").text("Time : " + hours + ":" + minutes + ":" + seconds);
             }, 1000);
         });
     </script>
-    
+
 }

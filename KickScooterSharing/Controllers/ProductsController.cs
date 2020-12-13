@@ -7,28 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KickScooterSharing.Data;
 using KickScooterSharing.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace KickScooterSharing.Controllers
 {
-    [Authorize]
-    public class ProductController : Controller
+    public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Product
+        // GET: Products
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Scooter).ThenInclude(p => p.ScooterModel).Include(p => p.Status).Include(p => p.Tariff);
+            var applicationDbContext = _context.Products.Include(p => p.Scooter).Include(p => p.Status).Include(p => p.Tariff);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Product/Details/5
+        // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -49,16 +47,16 @@ namespace KickScooterSharing.Controllers
             return View(product);
         }
 
-        // GET: Product/Create
+        // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["ScooterId"] = new SelectList(_context.Set<Scooter>(), "Id", "Name");
-            ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Id", "Name");
-            ViewData["TariffId"] = new SelectList(_context.Set<Tariff>(), "Id", "Name");
+            ViewData["ScooterId"] = new SelectList(_context.Scooter, "Id", "Id");
+            ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Id", "Id");
+            ViewData["TariffId"] = new SelectList(_context.Tariff, "Id", "Id");
             return View();
         }
 
-        // POST: Product/Create
+        // POST: Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -71,13 +69,13 @@ namespace KickScooterSharing.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ScooterId"] = new SelectList(_context.Set<Scooter>(), "Id", "Id", product.ScooterId);
+            ViewData["ScooterId"] = new SelectList(_context.Scooter, "Id", "Id", product.ScooterId);
             ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Id", "Id", product.StatusId);
-            ViewData["TariffId"] = new SelectList(_context.Set<Tariff>(), "Id", "Id", product.TariffId);
+            ViewData["TariffId"] = new SelectList(_context.Tariff, "Id", "Id", product.TariffId);
             return View(product);
         }
 
-        // GET: Product/Edit/5
+        // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,13 +88,13 @@ namespace KickScooterSharing.Controllers
             {
                 return NotFound();
             }
-            ViewData["ScooterId"] = new SelectList(_context.Set<Scooter>(), "Id", "Id", product.ScooterId);
+            ViewData["ScooterId"] = new SelectList(_context.Scooter, "Id", "Id", product.ScooterId);
             ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Id", "Id", product.StatusId);
-            ViewData["TariffId"] = new SelectList(_context.Set<Tariff>(), "Id", "Id", product.TariffId);
+            ViewData["TariffId"] = new SelectList(_context.Tariff, "Id", "Id", product.TariffId);
             return View(product);
         }
 
-        // POST: Product/Edit/5
+        // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -128,13 +126,13 @@ namespace KickScooterSharing.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ScooterId"] = new SelectList(_context.Set<Scooter>(), "Id", "Id", product.ScooterId);
+            ViewData["ScooterId"] = new SelectList(_context.Scooter, "Id", "Id", product.ScooterId);
             ViewData["StatusId"] = new SelectList(_context.Set<Status>(), "Id", "Id", product.StatusId);
-            ViewData["TariffId"] = new SelectList(_context.Set<Tariff>(), "Id", "Id", product.TariffId);
+            ViewData["TariffId"] = new SelectList(_context.Tariff, "Id", "Id", product.TariffId);
             return View(product);
         }
 
-        // GET: Product/Delete/5
+        // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -155,7 +153,7 @@ namespace KickScooterSharing.Controllers
             return View(product);
         }
 
-        // POST: Product/Delete/5
+        // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

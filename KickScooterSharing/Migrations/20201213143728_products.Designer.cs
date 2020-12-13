@@ -7,17 +7,17 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace KickScooterSharing.Data.Migrations
+namespace KickScooterSharing.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201114161017_migration4")]
-    partial class migration4
+    [Migration("20201213143728_products")]
+    partial class products
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
+                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -34,6 +34,24 @@ namespace KickScooterSharing.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FirstName");
+                });
+
+            modelBuilder.Entity("KickScooterSharing.Models.ParkingLocation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ParkingLocations");
                 });
 
             modelBuilder.Entity("KickScooterSharing.Models.Product", b =>
@@ -73,11 +91,11 @@ namespace KickScooterSharing.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<float>("Latitude")
-                        .HasColumnType("real");
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
 
-                    b.Property<float>("Longitude")
-                        .HasColumnType("real");
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
 
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
@@ -86,7 +104,7 @@ namespace KickScooterSharing.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductLocation");
+                    b.ToTable("ProductLocations");
                 });
 
             modelBuilder.Entity("KickScooterSharing.Models.Sales", b =>
@@ -96,17 +114,20 @@ namespace KickScooterSharing.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
+                    b.Property<bool>("IsFinished")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -194,9 +215,6 @@ namespace KickScooterSharing.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double>("BookingCostPerMinute")
-                        .HasColumnType("float");
 
                     b.Property<double>("CostPerMinute")
                         .HasColumnType("float");

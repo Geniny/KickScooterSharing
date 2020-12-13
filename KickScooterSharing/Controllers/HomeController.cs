@@ -56,8 +56,9 @@ namespace KickScooterSharing.Controllers
         public JsonResult GetProductLocations()
         {
             var locations = this._context.ProductLocations
-                .Include(p => p.Product).ThenInclude(p => p.Status)
-                .Where(p => p.Product.Status.Id == (int)Status.free)
+                .Include(p => p.Product).ThenInclude(s => s.Status)
+                .Where(p => p.Product.StatusId == (int)Status.free)
+                .Select(p => new ProductLocation() { Latitude = p.Latitude, ProductId = p.ProductId, Longitude = p.Longitude })
                 .ToList();
             return Json(locations);
         }
@@ -75,8 +76,8 @@ namespace KickScooterSharing.Controllers
             var product = await this._context.Products
                 .Include(p => p.Tariff)
                 .Include(x => x.Status)
-                .Include(p => p.Status)
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
             var user = await this._userManager.GetUserAsync(this.User);
 
             if (product.Status.Id == (int)Status.busy)
@@ -85,7 +86,7 @@ namespace KickScooterSharing.Controllers
                 return PartialView(null);
             }
 
-            if (user.Status.Id == (int)Status.busy)
+            if (user.StatusId == (int)Status.busy)
             {
                 ModelState.AddModelError(string.Empty, $"You ordered a product alerady.");
                 return PartialView(null);

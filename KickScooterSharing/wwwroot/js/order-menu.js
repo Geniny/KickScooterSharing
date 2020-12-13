@@ -1,20 +1,26 @@
 ﻿function order(id) {
-    ajaxRequest(id, 'Home/OrderProduct', () => {
-
-    });
+    $.ajax({
+        method: 'GET',
+        url: 'Home/OrderProduct',
+        dataType: 'HTML',
+        data: { 'id': id },
+        success: (data) => {
+            if (data == "") {
+                $('#smallModal').modal({
+                    show : true
+                });
+            }
+            else {
+                $('#order-menu').html(data);
+            }
+        }
+    })
 }
 
 function book(id) {
-    ajaxRequest(id, 'Home/BookProduct', () => {
-
-    });
+    $('#order-menu').load('Home/BookProduct', { 'id': id });
 }
 
 function ajaxRequest(id, url, func) {
-    $.ajax({
-        method: 'POST',
-        url: url,
-        data: { 'id': id },
-        success: func()
-    })
+
 }

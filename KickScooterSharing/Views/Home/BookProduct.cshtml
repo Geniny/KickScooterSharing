@@ -5,13 +5,21 @@
     </div>
     <div class="card-body">
         <h3>Model : @Model.Name</h3>
-        <h3>Status : @Model.Status</h3>
         <h3>Tariff : @Model.Tariff.Name</h3>
         <h3>Start price : @Model.Tariff.StartPrice</h3>
         <h3>Cost per minute : @Model.Tariff.CostPerMinute</h3>
     </div>
     <div class="card-footer btn-group">
-            <button class="btn-block btn-lg btn-success" onclick="order(@Model.ScooterId)">order</button>
+        <button id="order-btn" class="btn-block btn-lg btn-success"></button>
     </div>
-
 </div>
+
+
+
+<script>
+        $(document).ready(function () {
+            bookTimer = new BookTimer(@ViewData["Date"], @Model.ScooterId)
+                .startTimer('order-btn')
+                .addListener('order-btn');
+        });
+</script>

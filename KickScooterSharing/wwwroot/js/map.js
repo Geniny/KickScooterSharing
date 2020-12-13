@@ -26,7 +26,6 @@ function setMarkers(map, markers, icon, isParking) {
             });
         }
         else {
-            console.log(markers[i].productId)
             marker.set('id', markers[i].productId);
 
             marker.addListener("click", () => {
@@ -37,6 +36,9 @@ function setMarkers(map, markers, icon, isParking) {
                         $('#order-menu').load('Home/OrderMenu', { 'id': marker.id }).css("display", "block");
                     });
 
+                }
+                else {
+                    $('#order-menu').load('Home/OrderMenu', { 'id': marker.id });
                 }
                 map.setZoom(18);
                 map.setCenter(marker.getPosition());

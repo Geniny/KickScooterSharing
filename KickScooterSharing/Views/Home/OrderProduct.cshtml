@@ -21,7 +21,7 @@
                 var currentTime = new Date().getTime();
                 @{
                     DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                    TimeSpan diff = Model.DateTime.ToUniversalTime() - origin;
+                    TimeSpan diff = Model.StartDate.ToUniversalTime() - origin;
                 }
                 var distance = currentTime - @Math.Floor(diff.TotalMilliseconds);
                 var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

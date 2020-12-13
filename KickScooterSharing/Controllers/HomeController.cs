@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using KickScooterSharing.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace KickScooterSharing.Controllers
 {
@@ -55,6 +56,8 @@ namespace KickScooterSharing.Controllers
         public JsonResult GetProductLocations()
         {
             var locations = this._context.ProductLocations
+                .Include(p => p.Product).ThenInclude(p => p.Status)
+                .Where(p => p.Product.Status.Id == (int)Status.free)
                 .ToList();
             return Json(locations);
         }
@@ -69,7 +72,11 @@ namespace KickScooterSharing.Controllers
         [Authorize]
         public async Task<IActionResult> OrderProduct(int id)
         {
-            var product = await this._context.Products.Include(p => p.Tariff).Include(x => x.Status).FirstOrDefaultAsync(x => x.Id == id);
+            var product = await this._context.Products
+                .Include(p => p.Tariff)
+                .Include(x => x.Status)
+                .Include(p => p.Status)
+                .FirstOrDefaultAsync(x => x.Id == id);
             var user = await this._userManager.GetUserAsync(this.User);
 
             if (product.Status.Id == (int)Status.busy)
@@ -105,24 +112,46 @@ namespace KickScooterSharing.Controllers
                 _context.Add(sale);
                 await _context.SaveChangesAsync();
 
+
+                HttpContext.Session.SetString("isActive","true");
+                HttpContext.Session.SetInt32("saleId", (int)sale.Id);
+
                 return PartialView(sale);
             }
         }
 
         [Authorize]
+        public async Task<IActionResult> GetSaleInfo(int id)
+        {
+            var sale = await this._context.Sales.Where(s => s.Id == id).FirstOrDefaultAsync();
+            return PartialView("OrderProduct", sale);
+        }
+
+        [Authorize]
         public async Task<IActionResult> ReturnProduct(int id)
         {
-            var product = await this._context.Products.Include(p => p.Tariff).Include(x => x.Status).FirstOrDefaultAsync(x => x.Id == id);
+           
             var user = await this._userManager.GetUserAsync(this.User);
-            var sale = await this._context.Sales.Where(s => s.ProductId == product.Id && s.UserId == user.Id).LastOrDefaultAsync();
-            
-             var parkingsLocation = await this._context.ParkingLocations
-                .Where(location => Math.Abs(location.Latitude - location.Latitude) <= 0.0003 && Math.Abs(location.Longitude - location.Longitude) <= 0.0003)
+            var sale = await this._context.Sales
+                .Include(s => s.Product)
+                .Where(s => s.Id == id)
+                .LastOrDefaultAsync(); 
+            var product = await this._context.Products
+                .Include(p => p.Tariff)
+                .Include(x => x.Status)
+                .FirstOrDefaultAsync(x => x.Id == sale.ProductId);
+            var productLocation = await this._context.ProductLocations
+                .Where(p => p.ProductId == product.Id)
+                .FirstOrDefaultAsync();
+
+            var parkingsLocation = await this._context.ParkingLocations
+                .Where(location => Math.Abs(location.Latitude - productLocation.Latitude) <= 0.0003 && Math.Abs(location.Longitude - productLocation.Longitude) <= 0.0003)
                 .ToListAsync();
             
             if (sale == null)
             {
-                return PartialView(null);
+                ModelState.AddModelError(string.Empty, $"There are no parkings near");
+                return PartialView(false);
             }
             
             if (parkingsLocation.Count >= 1)
@@ -135,14 +164,21 @@ namespace KickScooterSharing.Controllers
                 user.StatusId = (int)Status.free;
                 product.StatusId = (int)Status.free;
 
+                HttpContext.Session.Clear();
+
                 _context.Update(product);
                 _context.Update(user);
                 _context.Update(sale);
+                await _context.SaveChangesAsync();
+
+                return PartialView(true);
             }
-
-            
-
-            return null;
+            else
+            {
+                ModelState.AddModelError(string.Empty, $"There are no parkings near");
+                return PartialView(false);
+            }
+       
         }
 
 

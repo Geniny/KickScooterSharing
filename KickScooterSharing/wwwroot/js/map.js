@@ -7,7 +7,7 @@
         zoom: 13
     });
 
-    $.getJSON('Home/GetProductLocations', function (data) { setMarkers(map, data, '/icons/kick-scooter.png', false); });
+    $.getJSON('Home/GetProductLocations', function (data) { console.log(data); setMarkers(map, data, '/icons/kick-scooter.png', false); });
     $.getJSON('Home/GetParkingLocations', function (data) { setMarkers(map, data, '/icons/parking.png', true);  });  
 }
 

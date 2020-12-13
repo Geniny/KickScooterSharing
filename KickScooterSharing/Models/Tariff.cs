@@ -10,7 +10,6 @@ namespace KickScooterSharing.Models
         public string Description { get; set; }
         public double CostPerMinute { get; set; }
         public double StartPrice { get; set; }
-        public double BookingCostPerMinute { get; set; }
         public List<Product> Products { get; set; }
 
         public Tariff()

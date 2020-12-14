@@ -9,7 +9,6 @@ using KickScooterSharing.Models;
 using KickScooterSharing.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using KickScooterSharing.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 
@@ -20,6 +19,7 @@ namespace KickScooterSharing.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         enum Status
         {
@@ -29,14 +29,15 @@ namespace KickScooterSharing.Controllers
          
 
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, UserManager<User> userManager)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
             this._context = context;
             this._userManager = userManager;
+            this._roleManager = roleManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //ViewBag.isActive = HttpContext.Session.GetString("isActive") == null ? "false" : "true";
             //ViewBag.saleId = HttpContext.Session.GetInt32("saleId");

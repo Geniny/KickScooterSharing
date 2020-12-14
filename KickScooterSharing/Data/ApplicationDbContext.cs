@@ -11,6 +11,8 @@ namespace KickScooterSharing.Data
     {
         public DbSet<Sales> Sales { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<FirstName> FirstName { get; set; }
+        public DbSet<SecondName> SecondNames { get; set; }
         public DbSet<ProductLocation> ProductLocations { get; set; }
         public DbSet<ParkingLocation> ParkingLocations { get; set; }
 

@@ -6,30 +6,46 @@
             <h5 class="mx-auto">Scooter info</h5>
         </div>
         <div class="card-body">
-            <h3>Tariff : </h3>
-            <h3>Balance : </h3>
+            <h3>Tariff : @Model.Product.Tariff.Name</h3>
+            <h3 id="balance">Balance : @Model.User.Balance</h3>
+            <h3>сюда пополнить баланс</h3>
             <h3 id="time"> Time : 0:0:0 </h3>
         </div>
-        <div class="card-footer btn-group">
-            <button id="finish-btn" asp-action="Finish" class="btn-block btn-lg btn-info">Finish</button>
+        <div class="card-footer">
+            <button type="submit" id="finish-btn" onclick="returnProduct(@ViewBag.saleId)"
+                    class="btn-block btn-lg btn-info">
+                Finish
+            </button>
         </div>
     </div>
 
     <script>
         $(document).ready(function () {
-            var x = setInterval(() => {
-                var currentTime = new Date().getTime();
-                @{
-                    DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                    TimeSpan diff = Model.StartDate.ToUniversalTime() - origin;
+            @{
+                DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                TimeSpan diff = Model.StartDate.ToUniversalTime() - origin;
+            }
+            var distance = new Date().getTime() - @Math.Floor(diff.TotalMilliseconds);
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var balance = @Model.User.Balance - (@Model.Product.Tariff.CostPerMinute * minutes);
+            $("#balance").text("Balance : " + balance);
+
+            var timer = setInterval(() => {
+                if ($('#order-menu').hasClass('opened') == false) {
+                    clearInterval(timer);
                 }
-                var distance = currentTime - @Math.Floor(diff.TotalMilliseconds);
+                var currentTime = new Date().getTime();
+
+                distance = currentTime - @Math.Floor(diff.TotalMilliseconds);
                 var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                if (seconds == 0) {
+                    balance -= @Model.Product.Tariff.CostPerMinute;
+                    $("#balance").text("Balance : " + balance);
+                }
                 $("#time").text("Time : " + hours + ":" + minutes + ":" + seconds);
             }, 1000);
         });
     </script>
-    
 }

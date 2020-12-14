@@ -50,13 +50,12 @@
                 <span class="span-or">or</span>
             </div>
             <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                @if (Model.ExternalLogins != null)
-                    @foreach (var provider in Model.ExternalLogins)
-                    {
-                        <button type="submit" class="btn nondecoration google btn-link text-center" name="provider" value="@provider.Name">
-                            <i class="fa fa-google-plus"></i> Signup using Google
-                        </button>
-                    }
+                @foreach (var provider in Model.ExternalLogins)
+                {
+                    <button type="submit" class="btn nondecoration google btn-link text-center" name="provider" value="@provider.Name">
+                        <i class="fa fa-google-plus"></i> Signup using Google
+                    </button>
+                }
             </form>
         </section>
     </div>

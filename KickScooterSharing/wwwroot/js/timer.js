@@ -40,7 +40,9 @@
     stopTimer() {
         this.stop = true;
     }
-}
+}    
+
+
 
 function startTimer(startTime, productId) {
 

@@ -56,12 +56,31 @@ namespace KickScooterSharing.Controllers
         [AllowAnonymous]
         public JsonResult GetProductLocations()
         {
-            var locations = this._context.ProductLocations
+            int? saleId = HttpContext.Session.GetInt32("saleId");
+
+            if (saleId != null)
+            {
+                var sale = this._context.Sales.Where(s => s.Id == saleId).FirstOrDefault();
+                var locations = this._context.ProductLocations
+                .Include(p => p.Product).ThenInclude(s => s.Status)
+                .Where(p => p.Product.StatusId == (int)Status.free || p.ProductId == sale.ProductId)
+                .Select(p => new ProductLocation() { Latitude = p.Latitude, ProductId = p.ProductId, Longitude = p.Longitude })
+                .ToList();
+
+                return Json(locations);
+            }
+            else
+            {
+                var locations = this._context.ProductLocations
                 .Include(p => p.Product).ThenInclude(s => s.Status)
                 .Where(p => p.Product.StatusId == (int)Status.free)
                 .Select(p => new ProductLocation() { Latitude = p.Latitude, ProductId = p.ProductId, Longitude = p.Longitude })
                 .ToList();
-            return Json(locations);
+
+                return Json(locations);
+            }
+            
+            
         }
 
         [AllowAnonymous]
@@ -118,6 +137,8 @@ namespace KickScooterSharing.Controllers
                 HttpContext.Session.SetString("isActive","true");
                 HttpContext.Session.SetInt32("saleId", (int)sale.Id);
 
+                ViewBag.saleId = sale.Id;
+
                 return PartialView(sale);
             }
         }
@@ -134,10 +155,7 @@ namespace KickScooterSharing.Controllers
         {
            
             var user = await this._userManager.GetUserAsync(this.User);
-            var sale = await this._context.Sales
-                .Include(s => s.Product)
-                .Where(s => s.Id == id)
-                .LastOrDefaultAsync(); 
+            var sale = await this._context.Sales.Where(s => s.Id == id).FirstOrDefaultAsync();
             var product = await this._context.Products
                 .Include(p => p.Tariff)
                 .Include(x => x.Status)
@@ -159,10 +177,11 @@ namespace KickScooterSharing.Controllers
             if (parkingsLocation.Count >= 1)
             {
                 var endDate = DateTime.Now;
-                var price = (endDate - sale.StartDate).TotalMinutes * product.Tariff.CostPerMinute;
+                var price = (int)(endDate - sale.StartDate).TotalMinutes * product.Tariff.CostPerMinute;
                 sale.EndDate = endDate;
-                sale.Price = price;
                 user.Balance -= price;
+                sale.Price = price + product.Tariff.StartPrice;
+                sale.IsFinished = true;
                 user.StatusId = (int)Status.free;
                 product.StatusId = (int)Status.free;
 
@@ -182,8 +201,7 @@ namespace KickScooterSharing.Controllers
             }
        
         }
-
-
+        
 
         public IActionResult Privacy()
         {

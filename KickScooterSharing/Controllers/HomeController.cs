@@ -38,6 +38,10 @@ namespace KickScooterSharing.Controllers
 
         public IActionResult Index()
         {
+            //ViewBag.isActive = HttpContext.Session.GetString("isActive") == null ? "false" : "true";
+            //ViewBag.saleId = HttpContext.Session.GetInt32("saleId");
+            ViewData["isActive"] = HttpContext.Session.GetString("isActive") == null ? "false" : "true";
+            ViewData["saleId"] = ViewBag.saleId = HttpContext.Session.GetInt32("saleId");
             return View();
         }
 
@@ -145,7 +149,13 @@ namespace KickScooterSharing.Controllers
         [Authorize]
         public async Task<IActionResult> GetSaleInfo(int id)
         {
-            var sale = await this._context.Sales.Where(s => s.Id == id).FirstOrDefaultAsync();
+            var sale = await this._context.Sales
+                .Where(s => s.Id == id)
+                .Include(s => s.Product)
+                .ThenInclude(p => p.Tariff)
+                .Include(s => s.User)
+                .FirstOrDefaultAsync();
+            ViewBag.saleId = id;
             return PartialView("OrderProduct", sale);
         }
 

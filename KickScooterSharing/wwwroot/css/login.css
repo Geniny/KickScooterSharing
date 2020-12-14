@@ -1,7 +1,5 @@
 ﻿
-.nondecoration {
-    text-decoration: none !important;
-}
+
 
 .login-or {
     position: relative;
@@ -38,9 +36,7 @@
     border: none;
 }
 
-.smoth-border {
-    border-radius: 50px;
-}
+
 
 
 

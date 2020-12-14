@@ -63,7 +63,6 @@ function setMarkers(map, markers, icon, isParking) {
                     $('#order-menu').animate({ width: '35%' }, 500, () => {
                         $('#order-menu').load('Home/OrderMenu', { 'id': marker.id }).css("display", "block");
                     });
-
                 }
                 else {
                     $('#order-menu').load('Home/OrderMenu', { 'id': marker.id });

@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KickScooterSharing.Data;
 using KickScooterSharing.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KickScooterSharing.Controllers
 {
+
+    [Authorize(Roles = "admin")]
     public class TariffController : Controller
     {
         private readonly ApplicationDbContext _context;

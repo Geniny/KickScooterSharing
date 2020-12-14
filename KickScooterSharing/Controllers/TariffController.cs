@@ -25,7 +25,7 @@ namespace KickScooterSharing.Controllers
         // GET: Tariff
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Tariff.ToListAsync());
+            return PartialView(await _context.Tariff.ToListAsync());
         }
 
         // GET: Tariff/Details/5

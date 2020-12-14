@@ -1,0 +1,22 @@
+﻿@model IEnumerable<KickScooterSharing.Models.Product>
+
+@{
+    ViewData["Title"] = "Management";
+}
+
+<h1 class="text-center mb-2">Management</h1>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+
+        <p class="mb-4">
+            <button type="submit" class="btn btn-link nondecoration p-0" onclick="$('#content').load('/Products/Index')">Products</button>
+            <span>/</span>
+            <button type="submit" class="btn btn-link nondecoration p-0" onclick="$('#content').load('/Tariff/Index')">Tariffs</button>
+            <span>/</span>
+            <button type="submit" class="btn btn-link nondecoration p-0" onclick="$('#content').load('/Scooters/Index')">Scooters</button>
+            <span>/</span>
+            <button type="submit" class="btn btn-link nondecoration p-0" onclick="$('#content').load('/ScooterModels/Index')">Scooter Models</button>
+        </p>
+
+        <div id="content" class="container"> </div>
+</div>

@@ -26,7 +26,7 @@ namespace KickScooterSharing.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Scooter.Include(s => s.ScooterModel);
-            return View(await applicationDbContext.ToListAsync());
+            return PartialView(await applicationDbContext.ToListAsync());
         }
 
         // GET: Scooters/Details/5

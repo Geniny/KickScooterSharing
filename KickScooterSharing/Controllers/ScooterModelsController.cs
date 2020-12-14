@@ -24,7 +24,7 @@ namespace KickScooterSharing.Controllers
         // GET: ScooterModels
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ScooterModel.ToListAsync());
+            return PartialView(await _context.ScooterModel.ToListAsync());
         }
 
         // GET: ScooterModels/Details/5

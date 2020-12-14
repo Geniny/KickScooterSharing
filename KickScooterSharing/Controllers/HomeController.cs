@@ -26,7 +26,7 @@ namespace KickScooterSharing.Controllers
             free = 1,
             busy = 2
         }
-         
+
 
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
@@ -39,10 +39,13 @@ namespace KickScooterSharing.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //ViewBag.isActive = HttpContext.Session.GetString("isActive") == null ? "false" : "true";
-            //ViewBag.saleId = HttpContext.Session.GetInt32("saleId");
             ViewData["isActive"] = HttpContext.Session.GetString("isActive") == null ? "false" : "true";
             ViewData["saleId"] = ViewBag.saleId = HttpContext.Session.GetInt32("saleId");
+            return View();
+        }
+
+        public async Task<IActionResult> Management()
+        {
             return View();
         }
 

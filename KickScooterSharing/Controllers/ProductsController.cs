@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace KickScooterSharing.Controllers
 {
-    [Authorize(Roles ="admin")]
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,7 +25,7 @@ namespace KickScooterSharing.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Products.Include(p => p.Scooter).Include(p => p.Status).Include(p => p.Tariff);
-            return View(await applicationDbContext.ToListAsync());
+            return PartialView(await applicationDbContext.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -58,9 +58,6 @@ namespace KickScooterSharing.Controllers
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,TariffId,ScooterId,StatusId")] Product product)
@@ -77,7 +74,6 @@ namespace KickScooterSharing.Controllers
             return View(product);
         }
 
-        // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -96,9 +92,6 @@ namespace KickScooterSharing.Controllers
             return View(product);
         }
 
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,TariffId,ScooterId,StatusId")] Product product)
@@ -134,7 +127,6 @@ namespace KickScooterSharing.Controllers
             return View(product);
         }
 
-        // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -155,7 +147,6 @@ namespace KickScooterSharing.Controllers
             return View(product);
         }
 
-        // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -154,7 +154,7 @@ namespace KickScooterSharing.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Menagement", "Home");
+                return RedirectToAction("Management", "Home");
             }
             ViewData["ScooterId"] = new SelectList(_context.Scooter, "Id", "Number", model.ScooterId);
             ViewData["TariffId"] = new SelectList(_context.Tariff, "Id", "Name", model.TariffId);
@@ -186,9 +186,14 @@ namespace KickScooterSharing.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _context.Products.FindAsync(id);
+            var productLocation = await _context.ProductLocations.Where(p => p.ProductId == product.Id).FirstOrDefaultAsync();
+            if (productLocation != null)
+            {
+                _context.ProductLocations.Remove(productLocation);
+            }
             _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            await _context.SaveChangesAsync(); 
+            return RedirectToAction("Management", "Home");
         }
 
         private bool ProductExists(int id)

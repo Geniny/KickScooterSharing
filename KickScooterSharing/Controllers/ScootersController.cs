@@ -66,7 +66,7 @@ namespace KickScooterSharing.Controllers
             {
                 _context.Add(scooter);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Management", "Home");
             }
             ViewData["ScooterModelId"] = new SelectList(_context.Set<ScooterModel>(), "Id", "Id", scooter.ScooterModelId);
             return View(scooter);
@@ -119,7 +119,7 @@ namespace KickScooterSharing.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Management", "Home");
             }
             ViewData["ScooterModelId"] = new SelectList(_context.Set<ScooterModel>(), "Id", "Id", scooter.ScooterModelId);
             return View(scooter);
@@ -152,7 +152,7 @@ namespace KickScooterSharing.Controllers
             var scooter = await _context.Scooter.FindAsync(id);
             _context.Scooter.Remove(scooter);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Management", "Home");
         }
 
         private bool ScooterExists(int id)

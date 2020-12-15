@@ -4,44 +4,47 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1 class="text-center">Create</h1>
 
-<h4>Tariff</h4>
+<h4 class="text-center">Tariff</h4>
 <hr />
-<div class="row">
+<div class="row text-center justify-content-center">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control smoth-border" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <input asp-for="Description" class="form-control smoth-border" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CostPerMinute" class="control-label"></label>
-                <input asp-for="CostPerMinute" class="form-control" />
+                <input asp-for="CostPerMinute" class="form-control smoth-border" />
                 <span asp-validation-for="CostPerMinute" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartPrice" class="control-label"></label>
-                <input asp-for="StartPrice" class="form-control" />
+                <input asp-for="StartPrice" class="form-control smoth-border" />
                 <span asp-validation-for="StartPrice" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="row justify-content-center mt-5">
+                <div class="col-6 form-group">
+                    <input type="submit" value="Create" class="btn btn-block btn-primary smoth-border" />
+                </div>
             </div>
         </form>
+        <div>
+            <a asp-action="Management" asp-controller="Home">Back to Management</a>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

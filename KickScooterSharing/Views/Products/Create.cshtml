@@ -1,14 +1,14 @@
-﻿@model KickScooterSharing.Models.Product
+﻿@model KickScooterSharing.ViewModels.ProductViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1 class="text-center">Create</h1>
 
-<h4>Product</h4>
+<h4 class="text-center">Product</h4>
 <hr />
-<div class="row">
+<div class="row justify-content-center smoth-border">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -19,18 +19,26 @@
             </div>
             <div class="form-group">
                 <label asp-for="TariffId" class="control-label"></label>
-                <select asp-for="TariffId" class ="form-control" asp-items="ViewBag.TariffId"></select>
+                <select asp-for="TariffId" class="form-control" asp-items="ViewBag.TariffId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="ScooterId" class="control-label"></label>
-                <select asp-for="ScooterId" class ="form-control" asp-items="ViewBag.ScooterId"></select>
+                <select asp-for="ScooterId" class="form-control" asp-items="ViewBag.ScooterId"></select>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label asp-for="Latitude" class="control-label"></label>
+                    <input asp-for="Latitude" class="form-control" />
+                    <span asp-validation-for="Latitude" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="Longitude" class="control-label"></label>
+                    <input asp-for="Longitude" class="form-control" />
+                    <span asp-validation-for="Longitude" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="StatusId" class="control-label"></label>
-                <select asp-for="StatusId" class ="form-control" asp-items="ViewBag.StatusId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-block btn-primary" />
             </div>
         </form>
     </div>
@@ -40,6 +48,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

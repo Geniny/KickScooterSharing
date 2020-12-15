@@ -62,7 +62,7 @@ namespace KickScooterSharing.Controllers
             {
                 _context.Add(scooterModel);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Management", "Home");
             }
             return View(scooterModel);
         }
@@ -113,7 +113,7 @@ namespace KickScooterSharing.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Management", "Home");
             }
             return View(scooterModel);
         }
@@ -144,7 +144,7 @@ namespace KickScooterSharing.Controllers
             var scooterModel = await _context.ScooterModel.FindAsync(id);
             _context.ScooterModel.Remove(scooterModel);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Management", "Home");
         }
 
         private bool ScooterModelExists(int id)

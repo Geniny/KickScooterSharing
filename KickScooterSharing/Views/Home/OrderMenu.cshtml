@@ -1,7 +1,7 @@
 ﻿@model KickScooterSharing.Models.Product
 <div class="card mx-auto w-100">
     <div class="card-header text-center">
-        <h5 class="mx-auto">Scooter info</h5>
+        <h5 class="px-0">Scooter info</h5>
     </div>
     <div class="card-body">
         <h3>Model : @Model.Name</h3>
@@ -11,7 +11,15 @@
         <h3>Cost per minute : @Model.Tariff.CostPerMinute</h3>
     </div>
     <div class="card-footer btn-group">
-            <button class="btn-block btn-lg btn-success" onclick="order(@Model.Id)">order</button>
+            <button id="order-btn" type="button" class="btn-block btn-lg btn-success" onclick="order(@Model.Id)">order</button>
     </div>
 
 </div>
+@{ 
+    if (!User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(() => { $('#order-btn').prop('disabled', true); });
+        </script>
+    }
+}

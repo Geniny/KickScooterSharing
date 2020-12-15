@@ -63,7 +63,7 @@ namespace KickScooterSharing.Controllers
             {
                 _context.Add(tariff);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Management", "Home");
             }
             return View(tariff);
         }
@@ -114,7 +114,7 @@ namespace KickScooterSharing.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Management", "Home");
             }
             return View(tariff);
         }
@@ -145,7 +145,7 @@ namespace KickScooterSharing.Controllers
             var tariff = await _context.Tariff.FindAsync(id);
             _context.Tariff.Remove(tariff);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Management", "Home");
         }
 
         private bool TariffExists(int id)

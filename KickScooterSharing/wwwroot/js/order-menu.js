@@ -6,6 +6,7 @@
         data: { 'id': id },
         success: (data) => {
             if (data == "") {
+                $('#modal-info').html('<span class="text-success text-danger">Something go wrong...</span>');
                 $('#smallModal').modal({
                     show : true
                 });

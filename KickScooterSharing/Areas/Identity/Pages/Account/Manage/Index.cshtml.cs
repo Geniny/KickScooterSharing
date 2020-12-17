@@ -18,7 +18,6 @@ namespace KickScooterSharing.Areas.Identity.Pages.Account.Manage
         private readonly SignInManager<User> _signInManager;
         private readonly ApplicationDbContext _context;
 
-
         public IndexModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
@@ -140,7 +139,7 @@ namespace KickScooterSharing.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
-            return RedirectToPage();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
